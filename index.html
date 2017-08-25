@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>A Blockly-based visual editor for JSON structures.</title>
+
+    <script type="text/javascript" src="blockly_compressed.js"></script>
+
+    <!-- context menu in English: -->
+    <script type="text/javascript" src="msg/js/en.js"></script>
+
+    <!-- a simple yet very practical widget: -->
+    <script type="text/javascript" src="field_textbutton.js"></script>
+
+    <!-- override/extend some Blockly code (menu-based building code): -->
+    <script type="text/javascript" src="menuly_override.js"></script>
+
+    <!-- blocks to build JSON structures from: -->
+    <script type="text/javascript" src="menuly_blocks.js"></script>
+
+    <!-- transforming a blockly diagram into a JSON string: -->
+    <script type="text/javascript" src="menuly_codegen.js"></script>
+
+    <!-- building a blockly diagram from a JSON string: -->
+    <script type="text/javascript" src="menuly_2blocks.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="../styles/MainStyles.css">
+
+    <script>
+
+        function updateJSONarea() {
+            document.getElementById('json_area').value = Blockly.JSON.fromWorkspace( Blockly.getMainWorkspace() );
+        }
+
+        function interpretJSONarea() {
+            Blockly.JSON.toWorkspace( document.getElementById('json_area').value, Blockly.getMainWorkspace() );
+        }
+
+    </script>
+</head>
+<body>
+
+<h3>A Blockly editor for AC Weenie Emote Tables. <br/>Forked and extended from <a href="https://github.com/ens-lg4/MenulyJSON/">MenulyJSON</a> </h3>
+
+  <br/>
+
+  <div id="editArea" style="height: 600px">
+    <div id="blocklyDiv" style="float: left; width: 74%; height: 100%"></div>
+
+    <xml id="toolbox" style="display: none">
+        <block type="dictionary"></block>
+        <block type="array"></block>
+        <block type="number"></block>
+        <block type="string"></block>
+        <block type="true"></block>
+        <block type="false"></block>
+    </xml>
+
+    <div style="margin-left: 74%; width: 24%; height: 100%">
+        <button onclick='interpretJSONarea()'>interpret JSON from the textarea below</button>
+        <textarea id=json_area style="height: 95%; width: 100%"></textarea>
+    </div>
+  </div>
+
+  <script>
+
+	Blockly.inject(document.getElementById('blocklyDiv'), {
+        //rtl: true,
+        toolbox: document.getElementById('toolbox'),
+        media: 'media/',    // to avoid reaching to the web for icons
+		sound: false,
+		collapse: true, comments: true, disable: false, scrollbars: true, trashcan: true // those ones are automatically true when there are categories
+	});
+
+    Blockly.JSON.toWorkspace( 'null', Blockly.getMainWorkspace() ); // dogfooding: load the initial state using our own JSON converter
+
+    Blockly.addChangeListener(updateJSONarea);
+  </script>
+
+</body>
+</html>

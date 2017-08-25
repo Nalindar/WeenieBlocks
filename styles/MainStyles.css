@@ -1,0 +1,12 @@
+﻿body {
+    background-color:black;
+}
+
+h3 {
+    font-weight: normal;
+    color: whitesmoke;
+}
+
+.editArea {
+    border: 20px, solid;
+}
